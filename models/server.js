@@ -5,8 +5,13 @@ class Server{
   constructor(){
     this.app = express();
     this.port = process.env.PORT || 3000;
-    this.usuariosRuta='/api/users';
-    this.authRuta='/api/auth';
+
+    this.paths={
+      auth:'/api/auth',
+      users:'/api/users',
+      categories:'/api/categories'
+    }
+
     // conectar a la base de datos
     this.conectarDb()
     // middleware: son funcionalidads para el webserver
@@ -20,8 +25,9 @@ class Server{
   }
 
   routes() {
-    this.app.use(this.usuariosRuta, require('../routes/user.routes'))
-    this.app.use(this.authRuta, require('../routes/auth.routes'))
+    this.app.use(this.paths.users, require('../routes/user.routes'))
+    this.app.use(this.paths.auth, require('../routes/auth.routes'))
+    this.app.use(this.paths.categories, require('../routes/categorias.routes'))
   }
   listen() {
     this.app.listen(this.port, () => {
