@@ -48,9 +48,36 @@ const createCategory = async(req,res=response)=>{
     return res.status(500).json(error)
   }
 }
+// actualizar categoria
+const updateCategory=async(req, res=response) => {
+  const {id}=req.params;
+  const {status,user,...data}=req.body;
+  data.name=data.name.toUpperCase();
+  data.user=req.user._id;
+
+  try {
+    const category=await Categoria.findByIdAndUpdate(id,data, {new: true}).populate('user',['name','role']);
+    return res.status(200).json(category);
+  } catch (error) {
+    return res.status(500).json(error)
+  }
+}
+
+const deleteCategory = async(req, res=response) => {
+  const {id}=req.params;
+
+  try {
+    const categoriaBorrada=await Categoria.findByIdAndUpdate(id, {status: false}, {new:true}).populate('user',['name','role']);
+    return res.status(200).json(categoriaBorrada);
+  } catch (error) {
+    return res.status(500).json(error)
+  }
+}
 
 module.exports = {
   createCategory,
   getCategories,
-  getCategoryById
+  getCategoryById,
+  updateCategory,
+  deleteCategory
 }
