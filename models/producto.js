@@ -41,10 +41,6 @@ const ProductoSchema=Schema({
     type: Number,
     default:0,
   },
-  discount:{
-    type: Number,
-    default:0,
-  },
   colors:{
     type: Array,
     required:true,
